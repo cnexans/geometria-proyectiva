@@ -1,0 +1,20 @@
+# --- Material de proceso: SOLO local, nunca publicar ---
+# Contiene borradores, notas, el .pptx y el capítulo del libro fuente.
+# Se mantiene en disco pero queda fuera de git para no exponerlo.
+.bin/
+
+# --- Artefactos de compilación de LaTeX ---
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.fbd_latexmk
+
+# --- Sistema / editor ---
+.DS_Store
+.claude/
