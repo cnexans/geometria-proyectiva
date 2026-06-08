@@ -485,13 +485,48 @@
 \end{frame}
 
 % ======================================================================
+% 9a. EL ESPACIO PROYECTIVO P(E) EN GENERAL
+% ======================================================================
+\begin{frame}{El espacio proyectivo $\mathbb P(E)$ en general}
+  \begin{block}{Definición}
+    Dado un espacio vectorial $E$, el \textbf{espacio proyectivo}
+    $\mathbb P(E)$ es el conjunto de sus \textbf{rectas por el origen}
+    (los subespacios de dimensión $1$). Equivalentemente,
+    \[
+      \mathbb P(E) \;=\; (E\setminus\{\mathbf 0\})\,/\!\sim,
+      \qquad v \sim \lambda v \ \ (\lambda\neq 0).
+    \]
+  \end{block}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Cocientar por la escala \alert{quita un grado de libertad}:
+              \[ \dim \mathbb P(E) = \dim E - 1. \]
+        \item $\RP^n := \mathbb P(\R^{n+1})$; \;
+              en particular $\RP^2=\mathbb P(\R^3)$ —el caso que venimos
+              usando—.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Subespacios proyectivos}
+        Un subespacio $L=\mathbb P(V)$ proviene de un subespacio vectorial
+        $V\subseteq E$, con
+        \[ \dim L = \dim V - 1. \]
+        {\footnotesize
+        recta de $\R^3$ ($\dim 1$) $\to$ punto;\\
+        plano de $\R^3$ ($\dim 2$) $\to$ recta.}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
 % 9b. LA FÓRMULA DE DIMENSIÓN
 % ======================================================================
 \begin{frame}{La fórmula de dimensión}
   \begin{itemize}
-    \item Proyectivizar \textbf{baja la dimensión en 1}:
-          punto $=0$, \; recta $=1$, \; $\RP^2=2$; \;
-          y por convención $\dim\varnothing=-1$.
+    \item Recordemos: $\dim\mathbb P(V)=\dim V-1$, así que punto $=0$, \;
+          recta $=1$, \; $\RP^2=2$; \; y por convención $\dim\varnothing=-1$.
   \end{itemize}
   \vspace{0.1cm}
   \begin{block}{Fórmula de dimensión (Santaló)}
