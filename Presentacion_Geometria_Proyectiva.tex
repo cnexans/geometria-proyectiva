@@ -133,36 +133,112 @@
     \begin{column}{0.54\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.0,>=Latex,line cap=round]
-        % --- plano imagen (2D) ---
-        \draw[azul,thick,fill=hielo] (-3.2,-1.0) -- (-2.2,-1.4)
-              -- (-2.2,1.0) -- (-3.2,1.4) -- cycle;
-        \node[azul,font=\footnotesize] at (-2.7,-1.85) {plano 2D};
-        % --- centro óptico ---
-        \fill[navy] (-1.3,0) circle (1.6pt);
-        \node[navy,font=\scriptsize,above] at (-1.3,0.08) {$O$};
-        % --- escena 3D (cubo en perspectiva) ---
-        \begin{scope}[shift={(1.7,0)}]
-          \draw[gris,thick] (0,-0.6) -- (1.2,-0.6) -- (1.2,0.6) -- (0,0.6) -- cycle;
-          \draw[gris,thick] (0.5,-0.2) -- (1.7,-0.2) -- (1.7,1.0) -- (0.5,1.0) -- cycle;
-          \draw[gris,thick] (0,-0.6) -- (0.5,-0.2);
-          \draw[gris,thick] (1.2,-0.6) -- (1.7,-0.2);
-          \draw[gris,thick] (1.2,0.6) -- (1.7,1.0);
-          \draw[gris,thick] (0,0.6) -- (0.5,1.0);
-        \end{scope}
-        \node[gris,font=\footnotesize] at (2.6,-1.0) {escena 3D};
-        % --- rayos de proyección por O ---
-        \foreach \py/\iy in {0.6/0.72, -0.6/-0.62, 1.0/0.95} {
-          \draw[oro,thin,opacity=0.85] (1.7,\py) -- (-1.3,0);
-          \fill[rojo] (-2.46,{\iy*0.62}) circle (1.0pt);
+        % --- centro óptico O ---
+        \coordinate (O) at (-1.3,0);
+        % --- escena 3D: cubo grande ---
+        \coordinate (F1) at (1.6,-0.7);  \coordinate (F2) at (2.8,-0.7);
+        \coordinate (F3) at (2.8,0.5);   \coordinate (F4) at (1.6,0.5);
+        \coordinate (K1) at (2.15,-0.25);\coordinate (K2) at (3.35,-0.25);
+        \coordinate (K3) at (3.35,0.95); \coordinate (K4) at (2.15,0.95);
+        % --- imagen del cubo en el plano (proyección invertida por O) ---
+        \coordinate (f1) at (-2.402,0.266); \coordinate (f2) at (-2.858,0.266);
+        \coordinate (f3) at (-2.858,-0.19); \coordinate (f4) at (-2.402,-0.19);
+        \coordinate (k1) at (-2.611,0.095); \coordinate (k2) at (-3.067,0.095);
+        \coordinate (k3) at (-3.067,-0.361);\coordinate (k4) at (-2.611,-0.361);
+        % --- plano imagen (paralelogramo) ---
+        \draw[azul,thick,fill=hielo,fill opacity=0.55]
+              (-3.32,-1.05) -- (-2.25,-1.32) -- (-2.25,1.05) -- (-3.32,1.32) -- cycle;
+        \node[azul,font=\footnotesize] at (-2.78,-1.72) {plano 2D};
+        % --- rayos de proyección por O (frente del cubo) ---
+        \foreach \B/\b in {F1/f1,F2/f2,F3/f3,F4/f4}{
+          \draw[oro,thin,opacity=0.7] (\B) -- (\b);
         }
+        % --- cubo imagen (rojo, invertido) ---
+        \draw[rojo,thick] (f1)--(f2)--(f3)--(f4)--cycle;
+        \draw[rojo,thick,opacity=0.85] (k1)--(k2)--(k3)--(k4)--cycle;
+        \draw[rojo,thick,opacity=0.85] (f1)--(k1) (f2)--(k2) (f3)--(k3) (f4)--(k4);
+        % --- cubo escena (gris) ---
+        \draw[gris,thick] (F1)--(F2)--(F3)--(F4)--cycle;
+        \draw[gris,thick] (K1)--(K2)--(K3)--(K4)--cycle;
+        \draw[gris,thick] (F1)--(K1) (F2)--(K2) (F3)--(K3) (F4)--(K4);
+        \node[gris,font=\footnotesize] at (2.6,-1.18) {escena 3D};
+        % --- centro óptico ---
+        \fill[navy] (O) circle (1.6pt);
+        \node[navy,font=\scriptsize,above] at (-1.28,0.08) {$O$};
         % --- flechas de doble sentido ---
-        \draw[->,azul,thick] (-0.55,1.55) .. controls (0.4,1.95) .. (1.4,1.6)
+        \draw[->,azul,thick] (-0.55,1.6) .. controls (0.4,2.0) .. (1.4,1.65)
               node[midway,above,font=\scriptsize,azul]{cámara: $3$D\,$\to$\,$2$D};
-        \draw[->,verde!60!black,thick] (1.4,-1.75) .. controls (0.4,-2.15) .. (-0.55,-1.75)
+        \draw[->,verde!60!black,thick] (1.4,-1.82) .. controls (0.4,-2.22) .. (-0.55,-1.82)
               node[midway,below,font=\scriptsize,verde!60!black]{LiDAR: $2$D\,$\to$\,$3$D};
       \end{tikzpicture}
     \end{column}
   \end{columns}
+\end{frame}
+
+% ======================================================================
+% 2b. LA PROYECCIÓN EN CONCRETO: PUNTOS 3D -> PUNTOS 2D
+% ======================================================================
+\begin{frame}{Del punto 3D al punto 2D}
+  \centering
+  \begin{tikzpicture}[scale=1.5,>=Latex,line cap=round]
+    \coordinate (O) at (-1.3,0);
+    % --- escena 3D: cubo grande ---
+    \coordinate (F1) at (1.6,-0.7);  \coordinate (F2) at (2.8,-0.7);
+    \coordinate (F3) at (2.8,0.5);   \coordinate (F4) at (1.6,0.5);
+    \coordinate (K1) at (2.15,-0.25);\coordinate (K2) at (3.35,-0.25);
+    \coordinate (K3) at (3.35,0.95); \coordinate (K4) at (2.15,0.95);
+    % --- imagen del cubo (proyección invertida por O) ---
+    \coordinate (f1) at (-2.402,0.266); \coordinate (f2) at (-2.858,0.266);
+    \coordinate (f3) at (-2.858,-0.19); \coordinate (f4) at (-2.402,-0.19);
+    \coordinate (k1) at (-2.611,0.095); \coordinate (k2) at (-3.067,0.095);
+    \coordinate (k3) at (-3.067,-0.361);\coordinate (k4) at (-2.611,-0.361);
+    % --- plano imagen ---
+    \draw[azul,thick,fill=hielo,fill opacity=0.5]
+          (-3.32,-1.05) -- (-2.25,-1.32) -- (-2.25,1.05) -- (-3.32,1.32) -- cycle;
+    \node[azul,font=\scriptsize] at (-2.78,-1.62) {plano $2$D};
+    % --- rayos tenues (todos los vértices del frente) ---
+    \foreach \B/\b in {F2/f2,F4/f4}{
+      \draw[oro,thin,opacity=0.55] (\B) -- (\b);
+    }
+    % --- rayos destacados de los pares etiquetados ---
+    \draw[rojo,thick,opacity=0.9] (F1) -- (f1);
+    \draw[azul!80!black,thick,opacity=0.9] (F3) -- (f3);
+    \draw[verde!55!black,thick,opacity=0.9] (K2) -- (k2);
+    % --- cubo imagen (rojo) ---
+    \draw[rojo,thick] (f1)--(f2)--(f3)--(f4)--cycle;
+    \draw[rojo,thick,opacity=0.8] (k1)--(k2)--(k3)--(k4)--cycle;
+    \draw[rojo,thick,opacity=0.8] (f1)--(k1) (f2)--(k2) (f3)--(k3) (f4)--(k4);
+    % --- cubo escena (gris) ---
+    \draw[gris,thick] (F1)--(F2)--(F3)--(F4)--cycle;
+    \draw[gris,thick] (K1)--(K2)--(K3)--(K4)--cycle;
+    \draw[gris,thick] (F1)--(K1) (F2)--(K2) (F3)--(K3) (F4)--(K4);
+    \node[gris,font=\scriptsize] at (2.5,-1.12) {escena $3$D};
+    % --- centro óptico ---
+    \fill[navy] (O) circle (1.2pt);
+    \node[navy,font=\scriptsize,above=1pt] at (O) {$O$};
+    % --- pares destacados: puntos 3D y sus imágenes 2D ---
+    \fill[rojo] (F1) circle (1.3pt);
+    \node[rojo,font=\tiny,below=0pt] at (F1) {$P_1\!=\!(X_1,Y_1,Z_1)$};
+    \fill[rojo] (f1) circle (1.3pt);
+    \node[rojo,font=\tiny,above right=-1pt] at (f1) {$p_1$};
+    \fill[azul!80!black] (F3) circle (1.3pt);
+    \node[azul!80!black,font=\tiny,above=0pt] at (F3) {$P_2$};
+    \fill[azul!80!black] (f3) circle (1.3pt);
+    \node[azul!80!black,font=\tiny,below right=-1pt] at (f3) {$p_2$};
+    \fill[verde!55!black] (K2) circle (1.3pt);
+    \node[verde!55!black,font=\tiny,right=0pt] at (K2) {$P_3$};
+    \fill[verde!55!black] (k2) circle (1.3pt);
+    \node[verde!55!black,font=\tiny,left=0pt] at (k2) {$p_3$};
+  \end{tikzpicture}
+
+  \vspace{0.15cm}
+  \begin{block}{De un mundo 3D a un punto 2D}
+    \centering
+    \large
+    \textbf{\textcolor{navy}{$(X,\,Y,\,Z)$}}~$\longrightarrow$~\textbf{\textcolor{rojo}{$(u,\,v)$}}
+    \hspace{1.4cm}\textcolor{gris}{\normalsize por ejemplo}\hspace{1.4cm}
+    \textbf{\textcolor{navy}{$(2,\,1,\,5)$}}~$\longrightarrow$~\textbf{\textcolor{rojo}{$(410,\,205)$}}
+  \end{block}
 \end{frame}
 
 % ======================================================================
@@ -409,6 +485,39 @@
 \end{frame}
 
 % ======================================================================
+% 9b. LA FÓRMULA DE DIMENSIÓN
+% ======================================================================
+\begin{frame}{La fórmula de dimensión}
+  \begin{itemize}
+    \item Proyectivizar \textbf{baja la dimensión en 1}:
+          punto $=0$, \; recta $=1$, \; $\RP^2=2$; \;
+          y por convención $\dim\varnothing=-1$.
+  \end{itemize}
+  \vspace{0.1cm}
+  \begin{block}{Fórmula de dimensión (Santaló)}
+    Para subespacios $L_r,\,M_p \subseteq \RP^n$ de dimensiones $r$ y $p$,
+    \[
+      \dim L_r + \dim M_p \;=\; \dim(L_r + M_p) \,+\, \dim(L_r \cap M_p),
+    \]
+    con la convención $\dim\varnothing=-1$ (para que valga incluso cuando
+    no se cortan).
+  \end{block}
+  \vspace{0.1cm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Consecuencia}
+        Si $\,r+p \ge n$, los subespacios \alert{siempre se cortan}.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Caso $r=p=1$, $n=2$}
+        Dos rectas de $\RP^2$ ($1+1\ge 2$): \textbf{un único punto común}.
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
 % 10. EL PRINCIPIO DE DUALIDAD
 % ======================================================================
 \begin{frame}{El principio de dualidad}
@@ -429,6 +538,38 @@
     \onslide<4->{$\inc{P}{\ell}=0$} & \onslide<4->{} & \onslide<4->{$\inc{\ell}{P}=0$}\\
     \bottomrule
   \end{tabular}
+\end{frame}
+
+% ======================================================================
+% 10b. DUALIDAD EN DIMENSIÓN n: PUNTO <-> HIPERPLANO
+% ======================================================================
+\begin{frame}{Dualidad en general: punto $\leftrightarrow$ hiperplano}
+  \begin{itemize}
+    \item El par punto $\leftrightarrow$ recta es \emph{propio de} $\RP^2$.
+          La regla general intercambia las dimensiones:
+  \end{itemize}
+  \[
+    L_r \;\longleftrightarrow\; L_{\,n-r-1}.
+  \]
+  \begin{itemize}
+    \item Un \textbf{punto} ($r=0$) se dualiza con $L_{n-1}$: un
+          \textbf{hiperplano} (codimensión $1$).
+  \end{itemize}
+  \vspace{0.1cm}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{En $\RP^2$ ($n=2$)}
+        Un hiperplano \emph{es} una recta ($n-1=1$): la dualidad colapsa
+        al par \textbf{punto $\leftrightarrow$ recta}.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{En $\RP^3$ ($n=3$)}
+        Punto $\leftrightarrow$ plano; y una \textbf{recta} ($r=1$) se
+        dualiza con $L_{1}$: ¡las rectas son \alert{autoduales}!
+      \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % ======================================================================
