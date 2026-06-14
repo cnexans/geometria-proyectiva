@@ -576,6 +576,34 @@
 \end{frame}
 
 % ======================================================================
+% 10a. IDEA DE LA DEMOSTRACIÓN (aplicación de dualidad)
+% ======================================================================
+\begin{frame}{Idea de la demostración}
+  \begin{block}{La aplicación de dualidad $\delta$}
+    Intercambia punto y recta dejando \emph{la misma} terna de coordenadas:
+    \[
+      \delta\bigl(\hp{x}{y}{z}\bigr)=\hp{x}{y}{z}_{\text{recta}},
+      \qquad
+      \delta\bigl(\hp{a}{b}{c}_{\text{recta}}\bigr)=\hp{a}{b}{c}.
+    \]
+  \end{block}
+  \begin{itemize}
+    \item \textbf{Clave:} $\delta$ \alert{preserva la incidencia}, porque el
+          producto escalar es simétrico, $\inc{P}{\ell}=\inc{\ell}{P}$:
+  \end{itemize}
+  \[
+    P\in\ell \iff \inc{P}{\ell}=0 \iff \inc{\delta(\ell)}{\delta(P)}=0
+    \iff \delta(\ell)\in\delta(P).
+  \]
+  \begin{itemize}
+    \item Aplicar $\delta$ a todo un enunciado cambia puntos por rectas
+          \textbf{conservando las relaciones}: una demostración del
+          original se vuelve, término a término, una del dual.
+          \hfill$\blacksquare$
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
 % 10b. DUALIDAD EN DIMENSIÓN n: PUNTO <-> HIPERPLANO
 % ======================================================================
 \begin{frame}{Dualidad en general: punto $\leftrightarrow$ hiperplano}
